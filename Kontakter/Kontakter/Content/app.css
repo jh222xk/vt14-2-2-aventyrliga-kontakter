@@ -1,0 +1,42 @@
+﻿html, body {
+    color: #222222;
+    padding: 0;
+    margin: 0;
+    font-family: "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif;
+    font-weight: normal;
+    font-style: normal;
+    line-height: 1;
+    position: relative;
+    cursor: default;
+}
+
+.wrapper {
+    margin: auto;
+    width: 800px;
+}
+
+table
+{
+    border: 1px solid #333;
+    border-collapse: collapse;
+    border-spacing: 0px;
+    width: 100%;
+}
+
+th
+{
+    background: #333;
+    color: #FFF;
+}
+
+td, th
+{
+    padding: 5px 3px;
+    text-align: left;
+    vertical-align: middle;
+}
+
+tr:nth-child(even)
+{
+    background: #EEEEE8;
+}
