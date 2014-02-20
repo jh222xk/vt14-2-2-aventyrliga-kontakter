@@ -146,13 +146,13 @@
                 <EditItemTemplate>
                     <%-- Template row in the table to edit contact information. --%>
                     <td>
-                        <asp:TextBox ID="FirstName" runat="server" ValidationGroup="EditValidationGroup" Text='<%#: BindItem.FirstName %>'></asp:TextBox>
+                        <asp:TextBox ID="FirstName" runat="server" MaxLength="50" ValidationGroup="EditValidationGroup" Text='<%#: BindItem.FirstName %>'></asp:TextBox>
                     </td>
                     <td>
-                        <asp:TextBox ID="LastName" runat="server" ValidationGroup="EditValidationGroup" Text='<%#: BindItem.LastName %>'></asp:TextBox>
+                        <asp:TextBox ID="LastName" runat="server" MaxLength="50" ValidationGroup="EditValidationGroup" Text='<%#: BindItem.LastName %>'></asp:TextBox>
                     </td>
                     <td>
-                        <asp:TextBox ID="EmailAddress" runat="server" ValidationGroup="EditValidationGroup" Text='<%#: BindItem.EmailAddress %>'></asp:TextBox>
+                        <asp:TextBox ID="EmailAddress" runat="server" MaxLength="50" ValidationGroup="EditValidationGroup" Text='<%#: BindItem.EmailAddress %>'></asp:TextBox>
                     </td>
                     <td>
                         <asp:LinkButton ID="LinkButtonEdit" runat="server" ValidationGroup="EditValidationGroup" CommandName="Update" Text="Spara" />
