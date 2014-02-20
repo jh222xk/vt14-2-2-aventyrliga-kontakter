@@ -61,7 +61,7 @@ namespace Kontakter.Model.DAL
             {
                 try
                 {
-                    var contacts = new List<Contact>(100);
+                    var contacts = new List<Contact>(20);
 
                     var cmd = new SqlCommand("Person.uspGetContacts", conn);
                     cmd.CommandType = CommandType.StoredProcedure;
@@ -113,7 +113,7 @@ namespace Kontakter.Model.DAL
                     var cmd = new SqlCommand("Person.uspGetContactsPageWise", conn);
                     cmd.CommandType = CommandType.StoredProcedure;
 
-                    cmd.Parameters.Add("@PageIndex", SqlDbType.Int, 4).Value = startRowIndex + 1;
+                    cmd.Parameters.Add("@PageIndex", SqlDbType.Int, 4).Value = startRowIndex / maximumRows + 1;
                     cmd.Parameters.Add("@PageSize", SqlDbType.Int, 4).Value = maximumRows;
 
                     cmd.Parameters.Add("@RecordCount", SqlDbType.Int, 4).Direction = ParameterDirection.Output;

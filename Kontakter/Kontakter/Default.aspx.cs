@@ -8,19 +8,49 @@ using System.Web.UI.WebControls;
 
 namespace Kontakter
 {
+
+    /// <summary>
+    /// http://msdn.microsoft.com/en-us/library/ee256141(v=vs.100).aspx
+    /// </summary>
+
     public partial class Default : System.Web.UI.Page
     {
-        protected void Page_Load(object sender, EventArgs e)
-        {
-
-        }
+        private DataPager _lastPage;
 
         private Service _service;
+
+        private DataPager LastPage
+        {
+            get { return _lastPage ?? (_lastPage = (DataPager)ContactListView.FindControl("ContactsDataPager")); }
+        }
 
         private Service Service
         {
             // A Service-object is created only when it's needed for the first time.
             get { return _service ?? (_service = new Service()); }
+        }
+
+        private string Message
+        {
+            get { return Session["Message"] as string; }
+            set
+            {
+                Session["Message"] = value;
+            }
+        }
+
+        protected void Page_Load(object sender, EventArgs e)
+        {
+            ContactListView.InsertItemPosition = InsertItemPosition.None;
+
+            if (Message != null)
+            {
+                PanelSuccess.Visible = true;
+                var messageString = Message;
+                LabelSuccess.Text += messageString;
+                Message = messageString;
+                Session.Clear();
+            }
         }
 
         /// <summary>
@@ -31,14 +61,12 @@ namespace Kontakter
             return Service.GetContacts();
         }
 
+        /// <summary>
+        /// Sets the number of rows to show and the maximumrows.
+        /// </summary>
         protected void PagePropertiesChanging(object sender, PagePropertiesChangingEventArgs e)
         {
-            DataPager pager = (DataPager)ContactListView.FindControl("ContactsDataPager");
-            pager.SetPageProperties(e.StartRowIndex, e.MaximumRows, false);
-
-            int totalRowCount;
-
-            ContactListView_GetDataPageWise(e.StartRowIndex, e.MaximumRows, out totalRowCount);
+            LastPage.SetPageProperties(e.StartRowIndex, e.MaximumRows, false);
         }
 
         /// <summary>
@@ -57,6 +85,8 @@ namespace Kontakter
             try
             {
                 Service.SaveContact(contact);
+                Message = "Kontaktuppgiften har lagts till.";
+                Response.Redirect(String.Format("?page={0}", LastPage.TotalRowCount / LastPage.MaximumRows + 1));
             }
             catch (Exception)
             {
@@ -82,6 +112,9 @@ namespace Kontakter
                 if (TryUpdateModel(contact))
                 {
                     Service.SaveContact(contact);
+                    var messageString = String.Format("Kontaktuppgiften '{0}' har uppdaterats.", contact.ContactID);
+                    Message = messageString;
+                    Response.Redirect(String.Format("?page={0}", LastPage.TotalRowCount / LastPage.MaximumRows + 1));
                 }
             }
             catch (Exception)
@@ -98,11 +131,18 @@ namespace Kontakter
             try
             {
                 Service.DeleteContact(contactId);
+                Message = "Kontaktuppgiften har tagits bort.";
+                Response.Redirect(String.Format("?page={0}", LastPage.TotalRowCount / LastPage.MaximumRows + 1));
             }
             catch (Exception)
             {
                 ModelState.AddModelError(String.Empty, "Ett oväntat fel inträffade då kontaktuppgiften skulle tas bort.");
             }
+        }
+
+        protected void ButtonNewContact_Click(object sender, EventArgs e)
+        {
+            ContactListView.InsertItemPosition = InsertItemPosition.FirstItem;
         }
     }
 }

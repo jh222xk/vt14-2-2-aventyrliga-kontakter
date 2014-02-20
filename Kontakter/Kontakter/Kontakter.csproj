@@ -59,6 +59,8 @@
   <ItemGroup>
     <Content Include="Content\app.css" />
     <Content Include="Default.aspx" />
+    <Content Include="Global.asax" />
+    <Content Include="Scripts\app.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -70,6 +72,9 @@
     </Compile>
     <Compile Include="Default.aspx.designer.cs">
       <DependentUpon>Default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Model\Contact.cs" />
     <Compile Include="Model\DAL\ContactDAL.cs" />
