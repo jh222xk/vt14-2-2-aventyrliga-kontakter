@@ -3,6 +3,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using Kontakter.App_Infastructure;
+using System.ComponentModel.DataAnnotations;
 
 namespace Kontakter.Model
 {
@@ -55,6 +57,14 @@ namespace Kontakter.Model
         /// <param name="contact">Contact information that will be saved.</param>
         public void SaveContact(Contact contact)
         {
+            ICollection<ValidationResult> validationResults;
+            if (!contact.Validate(out validationResults))
+            {
+                var ex = new ValidationException("Objektet klarade inte valderingen.");
+                ex.Data.Add("ValidationResult", validationResults);
+                throw ex;
+            }
+
             // Create a new entry if ContactID is equal to zero.
             if (contact.ContactID == 0) 
             {

@@ -82,15 +82,18 @@ namespace Kontakter
         /// </summary>
         public void ContactListView_InsertItem(Contact contact)
         {
-            try
+            if (ModelState.IsValid)
             {
-                Service.SaveContact(contact);
-                Message = "Kontaktuppgiften har lagts till.";
-                Response.Redirect(String.Format("?page={0}", LastPage.TotalRowCount / LastPage.MaximumRows + 1));
-            }
-            catch (Exception)
-            {
-                ModelState.AddModelError(String.Empty, "Ett oväntat fel inträffade då kontaktuppgiften skulle läggas till.");
+                try
+                {
+                    Service.SaveContact(contact);
+                    Message = "Kontaktuppgiften har lagts till.";
+                    Response.Redirect(String.Format("?page={0}", LastPage.TotalRowCount / LastPage.MaximumRows + 1));
+                }
+                catch (Exception)
+                {
+                    ModelState.AddModelError(String.Empty, "Ett oväntat fel inträffade då kontaktuppgiften skulle läggas till.");
+                }
             }
         }
 
